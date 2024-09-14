@@ -1,0 +1,53 @@
+services:
+  rabbit:
+    image: rabbitmq:3.13-management
+    container_name: RABBIT-SERVER
+    networks:
+      - geeklib
+  eureka:
+    image: thiagormg/eureka:latest
+    container_name: EUREKA-SERVER
+    ports:
+      - "8761:8761"
+    networks:
+      - geeklib
+  product-service:
+    image: thiagormg/product
+    networks:
+      - geeklib
+    depends_on:
+      - eureka
+  genre-service:
+    image: thiagormg/genre
+    networks:
+      - geeklib
+    depends_on:
+      - eureka
+  author-service:
+    image: thiagormg/author
+    networks:
+      - geeklib
+    depends_on:
+      - eureka
+  gateway:
+    image: thiagormg/gateway
+    networks:
+      - geeklib
+    depends_on:
+      - eureka
+  order-registry-service:
+    image: thiagormg/orderregistry
+    networks:
+      - geeklib
+    depends_on:
+      - eureka
+  order-registry-worker:
+    image: thiagormg/worker
+    networks:
+      - geeklib
+    depends_on:
+      - order-registry-service
+
+networks:
+  geeklib:
+    driver: bridge
