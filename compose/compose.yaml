@@ -31,6 +31,8 @@ services:
       - eureka
   gateway:
     image: thiagormg/gateway
+    ports:
+      - "9999:9999"
     networks:
       - geeklib
     depends_on:
